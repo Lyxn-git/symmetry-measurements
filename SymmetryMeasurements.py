@@ -54,22 +54,22 @@ def get_id_from_label(atom_label):
     return tag
 
 
-def get_neighbours():
+def get_neighbours(atom_labels):
     # Gets the list of atoms from the loaded model.
     # The orm is a list of dictionaries, containing labels, atom_ids, parts, ADPs, etc.
     orm_atoms = olexex.OlexRefinementModel().atoms()
 
-    selection = get_selected_atoms()
-    if selection == "":
+    ##selection = get_selected_atoms()
+    if atom_labels == [""]:
         print("No atoms")
         return None
 
-    selection = selection.split(' ')
-    print(selection)
+    ##selection = selection.split(' ')
+    ##print(selection)
 
     neighbour_tags = []
     neighbours_labels = []
-    for sel in selection:
+    for sel in atom_labels:
         # next finds the first occurrence in orm_atoms in which the label matches
         # with the sel and returns the atoms neighbours as a tuple of tags:
         neigbour_tags = next((atom['neighbours'] for atom in orm_atoms if atom['label'] == sel), None)
@@ -92,6 +92,11 @@ def get_neighbours():
 
     print(neighbours_labels)
     return neighbour_tags
+
+def get_neighbours_on_sel():
+    sel = olex.f('sel()')
+    atom_labels = sel.split(' ')
+    return get_neighbours(atom_labels)
 
 
 def get_xyz_sel():
@@ -131,6 +136,7 @@ class SymmetryMeasurements(PT):
         OV.registerFunction(get_neighbours, True, "SymmetryMeasurements")
         OV.registerFunction(shape_exe_msg, True, "SymmetryMeasurements")
         OV.registerFunction(get_xyz_sel, True, "SymmetryMeasurements")
+        OV.registerFunction(get_neighbours_on_sel, True, "SymmetryMeasurements")
     # END Generated =======================================
 
 SymmetryMeasurements_instance = SymmetryMeasurements()
