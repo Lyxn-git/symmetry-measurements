@@ -105,7 +105,6 @@ def get_xyz(atom_label):
     print(xyz)
     return xyz
 
-
 def shape_exe_msg():
     shape_path = shutil.which("shape")
     if shape_path is None:
